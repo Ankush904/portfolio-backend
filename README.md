@@ -88,11 +88,13 @@ users (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
+    phone TEXT UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
     profile_slug TEXT UNIQUE NOT NULL, // used in public profile URLs
     role TEXT DEFAULT 'user',          // 'user' or 'admin'
-    created_at TIMESTAMP DEFAULT now(),
-    updated_at TIMESTAMP DEFAULT now()
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now(),
+    deleted_at TIMESTAMPTZ DEFAULT now()
 )
 ```
 ```typescript
@@ -102,10 +104,11 @@ profiles (
     headline TEXT,
     short_bio TEXT,
     profile_image_url TEXT,
-    resume_drive_url TEXT,  -- link to Google Drive file
-    resume_view_path TEXT,  -- for routing (e.g., /resume/:slug)
-    created_at TIMESTAMP DEFAULT now(),
-    updated_at TIMESTAMP DEFAULT now()
+    resume_drive_url TEXT,  // link to Google Drive file
+    resume_view_path TEXT,  // for routing (e.g., /resume/:slug)
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now(),
+    deleted_at TIMESTAMPTZ DEFAULT now()
 )
 ```
 ```typescript
@@ -116,7 +119,9 @@ skills (
     category TEXT,
     icon_url TEXT,
     level TEXT,
-    created_at TIMESTAMP DEFAULT now()
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now(),
+    deleted_at TIMESTAMPTZ DEFAULT now()
 )
 ```
 ```typescript
@@ -129,7 +134,9 @@ projects (
     live_demo_url TEXT,
     github_url TEXT,
     featured BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT now()
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now(),
+    deleted_at TIMESTAMPTZ DEFAULT now()
 )
 ```
 ```typescript
@@ -140,7 +147,7 @@ contact_messages (
     email TEXT,
     subject TEXT,
     message TEXT,
-    created_at TIMESTAMP DEFAULT now()
+    created_at TIMESTAMPTZ DEFAULT now()
 )
 ```
 ```typescript
@@ -149,6 +156,7 @@ public_views (
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     slug TEXT UNIQUE,
     is_active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT now()
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
 )
 ```
